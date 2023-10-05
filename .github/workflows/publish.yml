@@ -31,5 +31,4 @@ jobs:
 
       - name: deploy
         run: |
-          cd docs
           mkdocs gh-deploy --force
