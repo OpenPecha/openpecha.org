@@ -29,30 +29,31 @@ theme:
 nav:
   - Home: index.md
   - Pecha Data:
-    - Intro to Pecha Data: data/intro.md
-    - Featured datasets: data/featured-datasets.md
-    - The OPF format: data/opf-format.md
-    - Pecha Data on GitHub: data/github.md
+      - Intro to Pecha Data: data/intro.md
+      - Featured datasets: data/featured-datasets.md
+      - Data Model: data/data-model.md
+      - The OPF format: data/opf-format.md
+      - Pecha Data on GitHub: data/github.md
   - Pecha Tools:
-    - Pecha Tools overview: tools/overview.md
-    - OCR Pipeline reference: tools/ocr-pipeline-reference.md
+      - Pecha Tools overview: tools/overview.md
+      - OCR Pipeline reference: tools/ocr-pipeline-reference.md
   - Pecha API:
-    - Getting started: api/getting-started.md
-    - Reference: api/reference.md
+      - Getting started: api/getting-started.md
+      - Reference: api/reference.md
   - Python library:
-    - Overview: toolkit/toolkit-overview.md  
-    - Installation: toolkit/install.md
-    - Aquisition pipeline: toolkit/acquisition-pipeline.md
-    - E-text operations: toolkit/etext-operations.md
-    - Publishing pipeline: toolkit/publishing-pipeline.md
+      - Overview: toolkit/toolkit-overview.md
+      - Installation: toolkit/install.md
+      - Aquisition pipeline: toolkit/acquisition-pipeline.md
+      - E-text operations: toolkit/etext-operations.md
+      - Publishing pipeline: toolkit/publishing-pipeline.md
   - Benchmarks: benchmarks.md
-  - Blog: 
-    - OpenPecha blog: blog/index.md
+  - Blog:
+      - OpenPecha blog: blog/index.md
   - Community:
-    - Partners: community/partners.md
-    - Stay informed: community/stay-informed.md
-    - Connect: community/connect.md
-    
+      - Partners: community/partners.md
+      - Stay informed: community/stay-informed.md
+      - Connect: community/connect.md
+
 markdown_extensions:
   - toc:
       permalink: true
@@ -65,9 +66,9 @@ markdown_extensions:
   - extra
   - pymdownx.superfences:
       custom_fences:
-      - name: mermaid
-        class: mermaid
-        format: !!python/name:pymdownx.superfences.fence_code_format ''
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format ""
   - pymdownx.tabbed
   - attr_list
   - md_in_html
@@ -75,12 +76,11 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
-
 plugins:
   - search
   - mkdocstrings
   - blog
-  
+
 extra:
   social:
     - icon: fontawesome/brands/github

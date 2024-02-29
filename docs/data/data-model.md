@@ -1,5 +1,5 @@
 ---
-icon: material/lightbulb-on-outline
+icon: material/graph-outline
 ---
 
 # OpenPecha Data Model
