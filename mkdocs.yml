@@ -1,6 +1,6 @@
 site_name: OpenPecha
-repo_name: OpenPecha/Toolkit
-repo_url: https://github.com/OpenPecha/Toolkit
+repo_name: OpenPecha/openpecha.org
+repo_url: https://github.com/OpenPecha/openpecha.org
 edit_uri: "blob/master/docs/docs"
 
 theme:
