@@ -1,33 +1,23 @@
-<h1 align="center">
-  <br>
-  <a href="https://openpecha.org"><img src="https://avatars.githubusercontent.com/u/82142807?s=400&u=19e108a15566f3a1449bafb03b8dd706a72aebcd&v=4" alt="OpenPecha" width="150"></a>
-  <br>
-</h1>
+<a href="https://openpecha.org">
+  <p align="left">
+    <img src="path/to/your/logo.png" alt="OpenPecha Logo" width="100" style="vertical-align: middle;">
+    <span style="font-size: 36px; font-weight: bold; margin-left: 10px;">OpenPecha</span>
+  </p>
+</a>
+<!-- Navigation Bar -->
+<nav>
+  <a href="#/about">About</a> |
+  <a href="#/team">Team</a> |
+  <a href="#/community">Community</a>
+</nav>
 
-<h3 align="center">Documentation</h3>
 
-<p align="center">
-  <a href="#description">Description</a> •
-  <a href="#repo-owners">Owners</a> •
-  <a href="#integrations">Integrations</a> •
-  <a href="#docs">Docs</a>
-</p>
-<hr>
-
-## Description
+## About
 
 This repo is for the documentation of OpenPecha project.
 
-## Repo owners
+## Team
+Teams page
 
-- [@ngawangtrinley](https://github.com/ngawangtrinley)
-
-## Integrations
-
-None
-
-## Docs
-
-[openpecha.org](https://openpecha.org/)
-
-[OpenPecha Wiki](https://wiki.openpecha.org/#/)
+## Community
+  [Community Page](https://forum.openpecha.org/)
