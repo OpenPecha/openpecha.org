@@ -1,6 +1,6 @@
 <a href="https://openpecha.org">
   <p align="left">
-    <img src="path/to/your/logo.png" alt="OpenPecha Logo" width="100" style="vertical-align: middle;">
+    <img src="https://avatars.githubusercontent.com/u/82142807?s=400&u=19e108a15566f3a1449bafb03b8dd706a72aebcd&v=4" alt="OpenPecha Logo" width="100" style="vertical-align: middle;">
     <span style="font-size: 36px; font-weight: bold; margin-left: 10px;">OpenPecha</span>
   </p>
 </a>
