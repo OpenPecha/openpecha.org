@@ -1,1 +1,4 @@
-- [Read Me](README)
+- [🏠 Home](README.md)
+- [📜 Pecha](/old-site/docs/toolkit/pecha.md)
+- [👥 Contact](Contact.md)
+- [🌐 Community](https://forum.openpecha.org/)
