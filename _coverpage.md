@@ -1,8 +1,8 @@
 ![logo](_media/logo.png)
 
-## v0.3.5
+## v2.0.1
 
-> Boundless Buddhist Knowledge.
+> OpenPecha. Boundless Buddhist Knowledge.
 
 [Datasets](https://openpecha.org/)
 [Forum](https://community.openpecha.org)
