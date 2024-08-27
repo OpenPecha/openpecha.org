@@ -5,7 +5,7 @@
 > OpenPecha. Boundless Buddhist Knowledge.
 
 [Datasets](https://openpecha.org/)
-[Forum](https://community.openpecha.org)
+[Forum](https://forum.openpecha.org)
 [GitHub](https://github.com/OpenPecha/)
 
 ![color](#fff)

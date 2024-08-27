@@ -1,17 +1,12 @@
-- Getting Started
-
-  - [How It Works](How-It-Works.md)
-  - [Requirements](README.md#requirements)
-  - [One-Time Setup](One-Time-Setup.md)
-
 - Overview
 
-  - [Creating New Project](Starting-New-Project.md)
-  - [Segmenting](Segmenting.md)
-  - [Styling](Styling.md)
-  - [Annotation](Annotation.md)
+  - [Overview](overview.md)
 
-- Troubleshooting
+- Datasets
 
-  - [Asking help](Asking-Help.md)
-  - [Roadmap](Roadmap.md)
+  - [Training data](training-data.md)
+
+- Community
+
+  - [Connect](connect.md)
+  - [Partners](partners.md)
