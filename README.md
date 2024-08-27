@@ -1,21 +1,9 @@
-# Getting Started
+# OpenPecha
 
-## 1. Requirements
+OpenPecha is open etext and annotation store made available on GitHub and through a set of APIs. 
 
-- Github account
-- Discord account
-- Transifex account
+The project’s primary aim is to facilitate the collection, proofreading, and enrichment of etexts by leveraging language technology and collaboration.
 
-## 2. Step-by-Step
+The OPF data model combined with tools such as annotation transfer turn the store as a powerful pivot format for data exchange and dynamic publishing.
 
-You will first have to do a few things to set things up. These things will have to be done just once. 
-
-Then after that, you will be able to move onto setting up your first project. Then in the future, you'll just repeat the step of creating a new project whenever you want to start new projects.
-
-### 2.1. Things Done Just Once
-
-Assuming you already have Github, Discord, and Transifex accounts. Proceed with [HOW-TO: One-Time Integration](One-Time-Setup.md).
-
-### 2.2. Things Repeated for Every Project
-
-Create your first project after carefully reading through the documentation titled [HOW-TO: Starting a New Project](Starting-New-Project.md).
+A real life application of the project is the pipeline of [Pecha Tools](https://pecha.tools/), [Pecha Data](https://github.com/PechaData) and the [Pecha](https://pecha.org/) web app.  
