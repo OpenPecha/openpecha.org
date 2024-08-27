@@ -1,9 +1,12 @@
+
 # OpenPecha
+OpenPecha is a freely available platform for storing and managing etexts and annotations. It's accessible through GitHub and a suite of APIs, allowing for easy integration with other tools.
 
-OpenPecha is open etext and annotation store made available on GitHub and through a set of APIs. 
+## Collaborative Buddhist Knowledge Management
+OpenPecha's core mission is to streamline the process of collecting, proofreading, and enriching etexts and annotations. It achieves this by combining the power of language technology with collaborative workflows.
 
-The project’s primary aim is to facilitate the collection, proofreading, and enrichment of etexts by leveraging language technology and collaboration.
+## Powerful Data Exchange and Publishing
+The project utilizes the OPF data model alongside tools like the toolkit's annotation transfer. This combination creates a robust pivot format, facilitating seamless data exchange and dynamic publishing capabilities.
 
-The OPF data model combined with tools such as annotation transfer turn the store as a powerful pivot format for data exchange and dynamic publishing.
-
-A real life application of the project is the pipeline of [Pecha Tools](https://pecha.tools/), [Pecha Data](https://github.com/PechaData) and the [Pecha](https://pecha.org/) web app.  
+## Real-World Application
+OpenPecha serves as the foundation for the Pecha ecosystem, including [Pecha Tools](https://pecha.tools/), [Pecha Data](https://github.com/cowprotocol/app-data), and the [Pecha web app](https://pecha.org/).
