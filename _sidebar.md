@@ -1,12 +1,23 @@
-- Overview
-
+- 🏠 **Home**
   - [Overview](readme.md)
 
-- Datasets
+- 🧩 **Our Initiatives**
+  - [Pecha App](https://pecha.org/)
+  - [Pecha Tools](https://pecha.tools/)
+  - [Pecha Data](pecha-data.md)
 
-  - [Training data](training-data.md)
+- 🏛️ **Charitable Trust**
+  - [About the Trust](charitable-trust.md)
+  - [Mission & Principles](charitable-trust.md#purpose)
+  - [Activities](charitable-trust.md#activities)
 
-- Community
+- 📊 **Resources**
+  - [Datasets](training-data.md)
+  - [Documentation](documentation.md)
+  - [API](api.md)
 
-  - [Connect](connect.md)
+- 👥 **Community**
+  - [Get Involved](get-involved.md)
   - [Partners](partners.md)
+  - [Forum](https://forum.openpecha.org/)
+  - [Contact Us](connect.md)

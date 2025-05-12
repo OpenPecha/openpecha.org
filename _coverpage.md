@@ -1,15 +1,15 @@
 <img src="_media/logo.svg" alt="logo" width="250" height="250">
 
-## v2.0.1
+# OpenPecha <small>v2.0.1</small>
 
-> OpenPecha. Boundless Buddhist Knowledge.
+> Making Buddhist Wisdom Accessible in the Digital Age
 
-[Forum](https://forum.openpecha.org)
-[Datasets](https://openpecha.org/#/training-data)
+- 📱 Mobile & Web Platform for Buddhist Texts
+- 🛠️ Text Processing & Translation Tools
+- 🧠 Open Buddhist Data & AI Resources
+
+[Get Started](#main)
+[Community Forum](https://forum.openpecha.org)
 [GitHub](https://github.com/OpenPecha/)
 
-![color](#fff)
-
-
-
-
+![color](#f8f8f8)
