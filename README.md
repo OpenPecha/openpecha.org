@@ -1,50 +1,202 @@
-# OpenPecha
+# Boundless Buddha Wisdom
 
-OpenPecha is a freely available platform for storing and managing etexts and annotations, making Buddhist wisdom accessible in the digital age. It's accessible through GitHub and a suite of APIs, allowing for easy integration with other tools. OpenPecha is supported by the [OpenPecha Charitable Trust](charitable-trust.md), which aims to bridge the gap between ancient wisdom and modern technology.
+## Project info
 
-## Our Initiatives
+**URL**: https://lovable.dev/projects/62f43e5b-3a60-486a-b02f-05141e3c007a
 
-### Pecha: Mobile App and Web Platform
+## Developer Setup
 
-Pecha is a comprehensive mobile app and web platform that makes authentic Buddhist texts, teachings, and practice plans freely accessible. This platform includes:
+### Prerequisites
 
-- Searchable texts, translations, and commentaries
-- Guided meditation instructions
-- Structured practice plans for various levels of experience
-- Resources for meditation, mindfulness, and compassionate action in daily life
+- Node.js (Latest LTS version recommended) - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- npm (comes with Node.js)
 
-[Learn more about Pecha](https://pecha.org/)
+### Development Environment Setup
 
-### Pecha Tools: Text Processing and Translation
+1. **Clone the repository**
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd boundless-buddha-wisdom
+   ```
 
-Pecha Tools provides specialized text processing applications that help Buddhist communities worldwide digitize, translate, and share important teachings. Our tools include:
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
 
-- OCR for Buddhist scripts
-- Translation editors
-- Publishing tools for high-quality digital resources
-- AI-assisted workflows with human oversight
+3. **Available Scripts**
+   - `npm run dev` - Start development server with hot reload
+   - `npm run build` - Build for production
+   - `npm run build:dev` - Build for development
+   - `npm run lint` - Run ESLint to check code quality
+   - `npm run preview` - Preview production build locally
 
-[Explore Pecha Tools](https://pecha.tools/)
+### Tech Stack
 
-### Pecha Data: Making Buddhist Knowledge Accessible
+This project uses modern web technologies:
 
-Pecha Data is a comprehensive initiative making authentic Buddhist wisdom accessible to technical communities and wider audiences globally. We create and provide:
+- **Framework**: React 18
+- **Build Tool**: Vite
+- **Language**: TypeScript
+- **UI Components**: shadcn-ui (based on Radix UI)
+- **Styling**: Tailwind CSS
+- **State Management**: React Query
+- **Form Handling**: React Hook Form with Zod validation
+- **Routing**: React Router DOM
+- **Development Tools**:
+  - ESLint for code linting
+  - TypeScript for type checking
+  - PostCSS for CSS processing
+  - SWC for fast compilation
 
-- High-quality datasets on platforms like HuggingFace and Wikimedia
-- APIs for technology developers
-- AI models trained on authentic Buddhist content
-- Resources for proper representation of Buddhist knowledge in digital spaces
+## How to Edit the Code
 
-[Access Pecha Data](https://github.com/OpenPecha)
+There are several ways to work with this codebase:
 
-## Collaborative Buddhist Knowledge Management
+### 1. Using Lovable (Recommended)
 
-OpenPecha's core mission is to streamline the process of collecting, proofreading, and enriching etexts and annotations. It achieves this by combining the power of language technology with collaborative workflows, guided by Buddhist principles of non-harm, compassion, and mindful awareness.
+Visit the [Lovable Project](https://lovable.dev/projects/62f43e5b-3a60-486a-b02f-05141e3c007a) and start prompting. Changes made via Lovable will be committed automatically to this repo.
 
-## Powerful Data Exchange and Publishing
+### 2. Local Development
 
-The project utilizes the OPF data model alongside tools like the toolkit's annotation transfer. This combination creates a robust pivot format, facilitating seamless data exchange and dynamic publishing capabilities while preserving the integrity and authenticity of Buddhist teachings.
+Work locally using your preferred IDE:
 
-## Supporting Wellbeing in the Digital Age
+```sh
+# Start the development server
+npm run dev
+```
 
-In an era of technological acceleration and rising rates of anxiety and depression, OpenPecha works to make timeless Buddhist wisdom accessible to address the root causes of modern suffering, offering pathways to balance outer progress with inner peace.
+The dev server will start with:
+- Hot module replacement
+- Error overlay
+- Fast refresh
+
+### 3. GitHub Integration
+
+- **Direct GitHub Editing**: Use GitHub's web interface to make quick edits
+- **GitHub Codespaces**: For a full cloud development environment
+
+## Local Deployment Guide
+
+This guide walks you through setting up and running the application locally for development and testing.
+
+### Quick Start
+
+If you've already set up the development environment, you can quickly start the app:
+
+```sh
+npm run dev
+```
+
+The application will be available at `http://localhost:5173` (or the next available port).
+
+### Complete Local Setup
+
+#### 1. Environment Setup
+
+Ensure you have the prerequisites installed:
+- Node.js (Latest LTS version) - Check with `node --version`
+- npm (comes with Node.js) - Check with `npm --version`
+
+#### 2. Project Setup
+
+```sh
+# Clone and navigate to the project
+git clone <YOUR_GIT_URL>
+cd boundless-buddha-wisdom
+
+# Install all dependencies
+npm install
+```
+
+#### 3. Development Server
+
+Start the development server with hot reload:
+
+```sh
+npm run dev
+```
+
+**Features:**
+- **Hot Module Replacement (HMR)**: Changes reflect instantly
+- **Error Overlay**: Helpful error messages in the browser
+- **Fast Refresh**: React components update without losing state
+- **TypeScript Support**: Real-time type checking
+
+**Default URL**: `http://localhost:5173`
+
+#### 4. Production Build (Local)
+
+Build the application for production:
+
+```sh
+# Create production build
+npm run build
+
+# Preview the production build locally
+npm run preview
+```
+
+The preview server will typically run on `http://localhost:4173`.
+
+#### 5. Development vs Production Builds
+
+| Command | Purpose | Optimizations | Use Case |
+|---------|---------|---------------|----------|
+| `npm run dev` | Development server | None (fast compilation) | Active development |
+| `npm run build:dev` | Development build | Minimal | Testing build process |
+| `npm run build` | Production build | Full (minification, tree-shaking) | Pre-deployment testing |
+| `npm run preview` | Preview production | Serves built files | Final local testing |
+
+### Troubleshooting
+
+#### Port Already in Use
+If the default port is occupied:
+```sh
+# Vite will automatically try the next available port
+# Or specify a custom port:
+npm run dev -- --port 3000
+```
+
+#### Clear Cache and Reinstall
+If you encounter dependency issues:
+```sh
+# Clear npm cache
+npm cache clean --force
+
+# Remove node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### TypeScript Errors
+Run type checking separately:
+```sh
+npx tsc --noEmit
+```
+
+#### Build Errors
+Check for linting issues:
+```sh
+npm run lint
+```
+
+### Development Workflow
+
+1. **Start Development**: `npm run dev`
+2. **Make Changes**: Edit files in your IDE
+3. **Test Changes**: View updates in browser (auto-reload)
+4. **Code Quality**: Run `npm run lint` before committing
+5. **Test Build**: Run `npm run build` to ensure production build works
+6. **Preview**: Use `npm run preview` to test the production build locally
+
+## Deployment
+
+Deploy your project through [Lovable](https://lovable.dev/projects/62f43e5b-3a60-486a-b02f-05141e3c007a) by clicking Share -> Publish.
+
+### Custom Domain Setup
+
+You can connect a custom domain to your project:
+1. Navigate to Project > Settings > Domains
+2. Click "Connect Domain"
+3. Follow the [custom domain setup guide](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
