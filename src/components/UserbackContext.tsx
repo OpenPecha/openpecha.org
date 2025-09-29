@@ -5,7 +5,7 @@ import Userback from '@userback/widget';
 const UserbackContext = createContext(null);
 
 export const UserbackProvider = ({ children }) => {
-  const [, setUserback] = useState(null);
+  const [userback, setUserback] = useState(null);
   
   // Get token from environment variable
   const token = import.meta.env.VITE_USERBACK_TOKEN;
@@ -29,7 +29,7 @@ export const UserbackProvider = ({ children }) => {
   }, [finalToken]);
 
   return (
-    <UserbackContext.Provider value={finalToken}>
+    <UserbackContext.Provider value={userback}>
       {children}
     </UserbackContext.Provider>
   );
