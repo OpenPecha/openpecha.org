@@ -26,7 +26,7 @@ export const UserbackProvider = ({ children }) => {
     };
 
     init();
-  }, [finalToken]);
+  }, []);
 
   return (
     <UserbackContext.Provider value={userback}>
