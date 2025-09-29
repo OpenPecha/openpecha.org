@@ -1,7 +1,7 @@
 
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { X, Menu, ChevronDown } from "lucide-react";
+import { X, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -75,6 +75,17 @@ const Navbar = () => {
               {link.label}
             </button>
           ))}
+          <a
+            href="https://openpecha.ideas.userback.io/p/GTHQ7iG8izB3Suu0wAmZ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-700 transition-colors duration-200 font-medium hover:opacity-80"
+            style={{color: '#8f3ae9'}}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+          >
+            Ideas
+          </a>
           <Button 
             onClick={() => scrollToSection('support')}
             className="text-white"
@@ -115,6 +126,15 @@ const Navbar = () => {
                   {link.label}
                 </button>
               ))}
+              <a
+                href="https://openpecha.ideas.userback.io/p/GTHQ7iG8izB3Suu0wAmZ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-left transition-colors duration-200 font-medium py-2"
+                style={{color: '#8f3ae9'}}
+              >
+                Ideas
+              </a>
               <Button 
                 onClick={() => scrollToSection('support')}
                 className="text-white w-full"

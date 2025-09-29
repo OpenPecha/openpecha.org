@@ -25,6 +25,8 @@ jobs:
 
     - name: Build
       run: npm run build
+      env:
+        VITE_USERBACK_TOKEN: ${{ secrets.VITE_USERBACK_TOKEN }}
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
