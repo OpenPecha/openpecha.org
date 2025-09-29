@@ -22,11 +22,17 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
+    
+    - name: Debug environment variables
+      run: |
+        echo "VITE_USERBACK_TOKEN is set: ${{ secrets.VITE_USERBACK_TOKEN != '' }}"
+        echo "Build environment: production"
 
     - name: Build
       run: npm run build
       env:
-        VITE_USERBACK_TOKEN: ${{ secrets.VITE_USERBACK_TOKEN }}
+          VITE_USERBACK_TOKEN: ${{ secrets.VITE_USERBACK_TOKEN }}
+          VITE_APP_ENV: production
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
