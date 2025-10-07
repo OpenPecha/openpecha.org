@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ExternalLink,
   Mail,
+  Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -83,24 +84,6 @@ const Index = () => {
       description:
         "Our shared training datasets have enabled 8 different AI projects, reducing individual development costs by 70%.",
       impact: "70% cost reduction",
-    },
-  ];
-
-  const resources = [
-    {
-      category: "Open & Collaborative Buddhist AI",
-      items: [
-        "AI models & workflows for translation, transcription, and textual analysis",
-        "High-quality, vetted AI training datasets for Sanskrit, Pāli, Tibetan, and Chinese Buddhist texts",
-      ],
-    },
-    {
-      category: "Open & Collaborative Buddhist Apps",
-      items: [
-        "Reusable software components for study and practice platforms",
-        "Open-source tools like specialized text editors",
-        "Pristinely edited and structured digital Buddhist texts, ready for any application",
-      ],
     },
   ];
 
@@ -303,34 +286,6 @@ const Index = () => {
                 power modern Buddhist software, all for free.
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                {resources.map((resource, index) => (
-                  <Card key={index} className="border-purple-200">
-                    <CardHeader>
-                      <CardTitle
-                        className="text-xl font-cormorant"
-                        style={{ color: "#8f3ae9" }}
-                      >
-                        {resource.category}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-2">
-                        {resource.items.map((item, itemIndex) => (
-                          <li key={itemIndex} className="flex items-start">
-                            <ChevronRight
-                              className="h-4 w-4 mt-1 mr-2 flex-shrink-0"
-                              style={{ color: "#08cbf2" }}
-                            />
-                            <span className="text-gray-600">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
               {/* Platform Links */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <a
@@ -362,7 +317,7 @@ const Index = () => {
                 </a>
 
                 <a
-                  href="https://huggingface.co/openpecha"
+                  href="https://huggingface.co/openpecha/datasets"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block transition-transform hover:scale-105"
@@ -376,7 +331,7 @@ const Index = () => {
                         <span className="text-3xl">🤗</span>
                       </div>
                       <CardTitle className="text-lg font-cormorant flex items-center justify-center gap-2">
-                        Hugging Face
+                        Datasets
                         <ExternalLink
                           className="h-4 w-4"
                           style={{ color: "#8f3ae9" }}
@@ -385,14 +340,14 @@ const Index = () => {
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-600 text-sm text-center">
-                        AI models, datasets, and machine learning resources
+                        OpenPecha Datasets
                       </p>
                     </CardContent>
                   </Card>
                 </a>
 
                 <a
-                  href="https://bo.wikipedia.org/wiki/%E0%BD%82%E0%BD%99%E0%BD%BC%E0%BC%8B%E0%BD%84%E0%BD%BC%E0%BD%A6%E0%BC%8D"
+                  href="https://huggingface.co/openpecha/models"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block transition-transform hover:scale-105"
@@ -400,10 +355,10 @@ const Index = () => {
                   <Card className="border-purple-200 hover:shadow-lg transition-shadow h-full">
                     <CardHeader className="text-center">
                       <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <BookOpen className="h-8 w-8 text-white" />
+                        <Brain className="h-8 w-8 text-white" />
                       </div>
                       <CardTitle className="text-lg font-cormorant flex items-center justify-center gap-2">
-                        Wikimedia
+                        Models
                         <ExternalLink
                           className="h-4 w-4"
                           style={{ color: "#8f3ae9" }}
@@ -412,8 +367,7 @@ const Index = () => {
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-600 text-sm text-center">
-                        Buddhist knowledge on Wikipedia, Wikisource, and
-                        Wikidata
+                        OpenPecha Models
                       </p>
                     </CardContent>
                   </Card>
