@@ -200,16 +200,3 @@ You can connect a custom domain to your project:
 1. Navigate to Project > Settings > Domains
 2. Click "Connect Domain"
 3. Follow the [custom domain setup guide](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
-
-## Data Sources
-
-### Google Sheets API
-
-The models and datasets data is sourced from our Google Sheets database:
-- **Google Sheets URL**: https://docs.google.com/spreadsheets/d/11C2F2CINJAHbrTn19I2z_h4xuf-d_QFnejxmiIU_LAc/edit?gid=0#gid=0
-
-This spreadsheet contains the source data for:
-- AI Models metadata (parameters, metrics, versions, etc.)
-- Datasets information (size, tasks, languages, etc.)
-
-The application fetches this data via Google Sheets API and caches it for performance.
