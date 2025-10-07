@@ -15,12 +15,14 @@ import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Close the mobile menu when changing routes
   useEffect(() => {
     setIsMenuOpen(false);
+    setIsResourcesOpen(false);
   }, [location.pathname]);
 
   const toggleMenu = () => {
@@ -182,25 +184,36 @@ const Navbar = () => {
                 <div key={link.id}>
                   {link.isDropdown ? (
                     <div className="flex flex-col">
-                      <button
-                        onClick={() => scrollToSection(link.id)}
-                        className="text-left font-medium py-2 flex items-center justify-between text-gray-700 transition-colors"
-                        style={{ color: "#8f3ae9" }}
-                      >
-                        <span>{link.label}</span>
-                        <ChevronDown className="h-4 w-4 ml-1" />
-                      </button>
-                      <div className="pl-4 space-y-1">
-                        {link.items?.map((item) => (
-                          <Link
-                            key={item.href}
-                            to={item.href}
-                            className="block py-2.5 px-3 text-sm text-gray-700 hover:text-purple-700 hover:bg-purple-50 rounded-md transition-colors font-medium"
-                          >
-                            {item.label}
-                          </Link>
-                        ))}
+                      <div className="flex items-center justify-between py-2">
+                        <button
+                          onClick={() => scrollToSection(link.id)}
+                          className="text-left font-medium text-gray-700 transition-colors flex-1"
+                          style={{ color: "#8f3ae9" }}
+                        >
+                          {link.label}
+                        </button>
+                        <button
+                          onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                          className="p-2 -mr-2 text-gray-700 transition-colors"
+                          style={{ color: "#8f3ae9" }}
+                          aria-label="Toggle resources dropdown"
+                        >
+                          <ChevronDown className={`h-4 w-4 transition-transform ${isResourcesOpen ? 'rotate-180' : ''}`} />
+                        </button>
                       </div>
+                      {isResourcesOpen && (
+                        <div className="pl-4 space-y-1">
+                          {link.items?.map((item) => (
+                            <Link
+                              key={item.href}
+                              to={item.href}
+                              className="block py-2.5 px-3 text-sm text-gray-700 hover:text-purple-700 hover:bg-purple-50 rounded-md transition-colors font-medium"
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <button

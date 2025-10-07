@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ArrowLeft, Search, Home, Cpu, Zap } from "lucide-react";
-import { MODELS } from "@/data/models";
+import { fetchModels, type ModelMeta } from "@/data/models";
 
 // Simple tag chip
 const Tag: React.FC<{ label: string }> = ({ label }) => (
@@ -13,6 +13,18 @@ const Tag: React.FC<{ label: string }> = ({ label }) => (
 
 const ModelsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [models, setModels] = useState<ModelMeta[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadModels = async () => {
+      setLoading(true);
+      const data = await fetchModels();
+      setModels(data);
+      setLoading(false);
+    };
+    loadModels();
+  }, []);
 
   // Helper to format parameter size
   const formatParams = (params: number): string => {
@@ -86,7 +98,18 @@ const ModelsPage: React.FC = () => {
 
         {/* Cards grid */}
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {MODELS.map((model) => (
+          {loading ? (
+            <div className="col-span-full text-center py-12">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-purple-600 border-r-transparent"></div>
+              <p className="mt-4 text-gray-600">Loading models...</p>
+            </div>
+          ) : models.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <Cpu className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">No models available</p>
+            </div>
+          ) : (
+            models.map((model) => (
             <div
               key={model.id}
               className="group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -128,7 +151,8 @@ const ModelsPage: React.FC = () => {
                 </button>
               </div>
             </div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Back button */}

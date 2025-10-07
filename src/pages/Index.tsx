@@ -34,8 +34,8 @@ const Index = () => {
 
   useEffect(() => {
     // Check if we need to scroll to a section
-    if (location.state && location.state.scrollToSection) {
-      const sectionId = location.state.scrollToSection;
+    if (location.state && location.state.scrollTo) {
+      const sectionId = location.state.scrollTo;
       const element = document.getElementById(sectionId);
       if (element) {
         // Give time for the page to fully render before scrolling

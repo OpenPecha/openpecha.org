@@ -1,6 +1,3 @@
-// =========================
-// Types & Model Data
-// =========================
 export type ModelMeta = {
   id: string;
   name: string;
@@ -16,6 +13,114 @@ export type ModelMeta = {
   tags: string[];
   hf_repo: string;
 };
+
+// Type for Google Sheets API response
+type GoogleSheetModel = {
+  id: string;
+  name: string;
+  owner: string;
+  task: string;
+  base_model: string;
+  parameters_b: number;
+  version: string;
+  updated_at: string;
+  languages: string[];
+  datasets: string[];
+  tags: string[];
+  hf_repo: string;
+  [key: string]: string | number | string[] | undefined;
+};
+
+// Google Sheets API URL
+const GOOGLE_SHEETS_API_BASE_URL =
+  "https://script.google.com/macros/s/AKfycbwyqVAZcThx65FXqJjqiQbFhSbZn4IP5MNpNaKTU7U1DJ0UyotJFg8SaUMsrS7U9uWMoA/exec";
+const GOOGLE_SHEETS_API_URL = `${GOOGLE_SHEETS_API_BASE_URL}?sheet=models`;
+
+// Cache configuration
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minute
+let cachedModels: ModelMeta[] | null = null;
+let cacheTimestamp: number | null = null;
+
+// Check if cache is still valid
+function isCacheValid(): boolean {
+  if (!cachedModels || !cacheTimestamp) return false;
+  const now = Date.now();
+  return now - cacheTimestamp < CACHE_DURATION;
+}
+
+// Transform Google Sheets data to ModelMeta format
+function transformGoogleSheetModel(data: GoogleSheetModel): ModelMeta {
+  // Extract metrics from fields starting with "metric_"
+  const metrics: Record<string, number> = {};
+  Object.keys(data).forEach((key) => {
+    if (key.startsWith("metric_") && typeof data[key] === "number") {
+      const metricName = key.replace("metric_", "");
+      metrics[metricName] = data[key];
+    }
+  });
+
+  // Format updated_at to simple date string (YYYY-MM-DD)
+  let formattedDate = data.updated_at;
+  // Check if it's a Date object or long date string and convert to YYYY-MM-DD
+  if (typeof data.updated_at === 'string' && (data.updated_at.includes('GMT') || data.updated_at.includes('T'))) {
+    const date = new Date(data.updated_at);
+    formattedDate = date.toISOString().split('T')[0];
+  } else if (typeof data.updated_at === 'object') {
+    const date = new Date(data.updated_at as unknown as Date);
+    formattedDate = date.toISOString().split('T')[0];
+  }
+
+  return {
+    id: data.id,
+    name: data.name,
+    owner: data.owner,
+    task: data.task,
+    base_model: data.base_model,
+    parameters_b: data.parameters_b,
+    version: data.version,
+    updated_at: formattedDate,
+    languages: data.languages,
+    datasets: data.datasets,
+    metrics,
+    tags: data.tags,
+    hf_repo: data.hf_repo,
+  };
+}
+
+// Fetch models from Google Sheets API with caching
+export async function fetchModels(): Promise<ModelMeta[]> {
+  // Return cached data if still valid
+  if (isCacheValid() && cachedModels) {
+    console.log("Using cached models");
+    return cachedModels;
+  }
+
+  console.log("Fetching fresh models from API");
+  try {
+    const response = await fetch(GOOGLE_SHEETS_API_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: GoogleSheetModel[] = await response.json();
+    const transformedData = data.map(transformGoogleSheetModel);
+
+    // Update cache
+    cachedModels = transformedData;
+    cacheTimestamp = Date.now();
+
+    return transformedData;
+  } catch (error) {
+    console.error("Error fetching models from Google Sheets:", error);
+    // Return cached data if available, even if expired
+    if (cachedModels) {
+      console.log("API failed, using stale cache");
+      return cachedModels;
+    }
+    // Return fallback data if API fails and no cache
+    console.log("API failed, using fallback static data");
+    return MODELS;
+  }
+}
 
 export const MODELS: ModelMeta[] = [
   {
@@ -170,7 +275,34 @@ export const MODELS: ModelMeta[] = [
   },
 ];
 
-// Helper function to find model by ID
+// Helper function to find model by ID (from static data)
 export const getModelById = (id: string): ModelMeta | undefined => {
   return MODELS.find((model) => model.id === id);
+};
+
+// Helper function to find model by ID (from fetched data)
+export const getModelByIdAsync = async (
+  id: string
+): Promise<ModelMeta | undefined> => {
+  const models = await fetchModels();
+  return models.find((model) => model.id === id);
+};
+
+// Manually clear the cache (useful for debugging or force refresh)
+export const clearModelsCache = (): void => {
+  cachedModels = null;
+  cacheTimestamp = null;
+  console.log("Models cache cleared");
+};
+
+// Get cache info (useful for debugging)
+export const getModelsCacheInfo = (): {
+  isCached: boolean;
+  age: number | null;
+} => {
+  if (!cacheTimestamp) {
+    return { isCached: false, age: null };
+  }
+  const age = Date.now() - cacheTimestamp;
+  return { isCached: isCacheValid(), age };
 };

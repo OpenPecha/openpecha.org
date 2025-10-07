@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import {
   Layers,
   Zap,
 } from "lucide-react"; // NOTE: Database icon removed
-import { getModelById } from "@/data/models";
+import { getModelByIdAsync, type ModelMeta } from "@/data/models";
 
 const Tag: React.FC<{ label: string }> = ({ label }) => (
   <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs text-gray-600 bg-white">
@@ -26,7 +26,33 @@ const Tag: React.FC<{ label: string }> = ({ label }) => (
 const ModelDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const model = id ? getModelById(id) : undefined;
+  const [model, setModel] = useState<ModelMeta | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadModel = async () => {
+      if (!id) {
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      const data = await getModelByIdAsync(id);
+      setModel(data);
+      setLoading(false);
+    };
+    loadModel();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-purple-600 border-r-transparent mb-4"></div>
+          <p className="text-gray-600">Loading model...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!model) {
     return (
@@ -68,41 +94,41 @@ const ModelDetail: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Home className="h-4 w-4" />
+        <div className="flex items-center gap-2 text-sm text-gray-500 mb-6 overflow-x-auto">
+          <Home className="h-4 w-4 flex-shrink-0" />
           <span
-            className="cursor-pointer hover:text-gray-700"
+            className="cursor-pointer hover:text-gray-700 whitespace-nowrap"
             onClick={() => navigate("/")}
           >
             Home
           </span>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
           <span
-            className="cursor-pointer hover:text-gray-700"
+            className="cursor-pointer hover:text-gray-700 whitespace-nowrap"
             onClick={() => navigate("/models")}
           >
             Models
           </span>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-gray-700">{model.name}</span>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
+          <span className="text-gray-700 truncate">{model.name}</span>
         </div>
 
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-start gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row items-start gap-4 mb-4">
             <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <Cpu className="h-8 w-8 text-purple-600" />
             </div>
-            <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 break-words">
                 {model.name}
               </h1>
-              <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
-                <span className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-3 text-xs sm:text-sm text-gray-500">
+                <span className="flex items-center gap-1 break-all">
                   <span className="font-medium">{model.owner}</span>
                 </span>
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  <Calendar className="h-4 w-4 flex-shrink-0" />
                   Updated {model.updated_at}
                 </span>
                 <span className="flex items-center gap-1">
@@ -119,10 +145,6 @@ const ModelDetail: React.FC = () => {
             <Button className="gap-2">
               🤗 View on Hugging Face
               <ExternalLink className="h-4 w-4" />
-            </Button>
-            <Button variant="secondary" className="gap-2">
-              <Layers className="h-4 w-4" />
-              Model Files
             </Button>
           </div>
         </div>
@@ -190,7 +212,7 @@ const ModelDetail: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {Object.entries(model.metrics).map(([key, value]) => (
                     <div key={key} className="bg-gray-50 p-4 rounded-lg">
                       <p className="text-sm text-gray-600 mb-1">

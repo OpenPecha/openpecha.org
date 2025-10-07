@@ -13,6 +13,8 @@ export type DatasetMeta = {
     items?: number; // for images/docs/lines
     tokens?: number; // for text corpora
     storage_gb?: number; // size on disk
+    rows?: number; // number of rows in dataset
+    size_mb?: number; // size in megabytes
   };
   splits?: { train?: number; val?: number; test?: number };
   license: string; // SPDX or name
@@ -29,6 +31,133 @@ export type DatasetMeta = {
   };
 };
 
+// Type for Google Sheets API response
+type GoogleSheetDataset = {
+  id: string;
+  name: string;
+  org: string;
+  repo: string;
+  description: string;
+  tasks: string[];
+  modalities: string[];
+  languages: string[];
+  size_rows?: number;
+  size_mb?: number;
+  size_hours?: number;
+  size_items?: number;
+  size_tokens?: number;
+  size_storage_gb?: number;
+  splits_train?: number;
+  splits_val?: number;
+  splits_test?: number;
+  license: string;
+  version: string;
+  updated_at: string;
+  visibility: "public" | "private";
+  labels?: string[];
+  slug?: string;
+  checksum?: string;
+  link_repo?: string;
+  link_docs?: string;
+  link_huggingface?: string;
+  link_paper?: string;
+};
+
+// Google Sheets API URL
+const GOOGLE_SHEETS_API_BASE_URL =
+  "https://script.google.com/macros/s/AKfycbwyqVAZcThx65FXqJjqiQbFhSbZn4IP5MNpNaKTU7U1DJ0UyotJFg8SaUMsrS7U9uWMoA/exec";
+const GOOGLE_SHEETS_API_URL = `${GOOGLE_SHEETS_API_BASE_URL}?sheet=datasets`;
+
+// Cache configuration
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minute
+let cachedDatasets: DatasetMeta[] | null = null;
+let cacheTimestamp: number | null = null;
+
+// Check if cache is still valid
+function isCacheValid(): boolean {
+  if (!cachedDatasets || !cacheTimestamp) return false;
+  const now = Date.now();
+  return now - cacheTimestamp < CACHE_DURATION;
+}
+
+// Transform Google Sheets data to DatasetMeta format
+function transformGoogleSheetData(data: GoogleSheetDataset): DatasetMeta {
+  return {
+    id: data.id,
+    slug: data.slug,
+    name: data.name,
+    org: data.org,
+    repo: data.repo,
+    description: data.description,
+    tasks: data.tasks,
+    modalities: data.modalities as ("text" | "audio" | "image" | "document")[],
+    languages: data.languages,
+    size: {
+      hours: data.size_hours,
+      items: data.size_items,
+      tokens: data.size_tokens,
+      storage_gb: data.size_storage_gb,
+      rows: data.size_rows,
+      size_mb: data.size_mb,
+    },
+    splits:
+      data.splits_train || data.splits_val || data.splits_test
+        ? {
+            train: data.splits_train,
+            val: data.splits_val,
+            test: data.splits_test,
+          }
+        : undefined,
+    license: data.license,
+    version: data.version,
+    updated_at: data.updated_at,
+    visibility: data.visibility,
+    checksum: data.checksum,
+    labels: data.labels,
+    links: {
+      repo: data.link_repo,
+      docs: data.link_docs,
+      huggingface: data.link_huggingface,
+      paper: data.link_paper,
+    },
+  };
+}
+
+// Fetch datasets from Google Sheets API with caching
+export async function fetchDatasets(): Promise<DatasetMeta[]> {
+  // Return cached data if still valid
+  if (isCacheValid() && cachedDatasets) {
+    console.log("Using cached datasets");
+    return cachedDatasets;
+  }
+
+  console.log("Fetching fresh datasets from API");
+  try {
+    const response = await fetch(GOOGLE_SHEETS_API_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: GoogleSheetDataset[] = await response.json();
+    const transformedData = data.map(transformGoogleSheetData);
+
+    // Update cache
+    cachedDatasets = transformedData;
+    cacheTimestamp = Date.now();
+
+    return transformedData;
+  } catch (error) {
+    console.error("Error fetching datasets from Google Sheets:", error);
+    // Return cached data if available, even if expired
+    if (cachedDatasets) {
+      console.log("API failed, using stale cache");
+      return cachedDatasets;
+    }
+    // Return fallback data if API fails and no cache
+    console.log("API failed, using fallback static data");
+    return DATASETS;
+  }
+}
+
 export const DATASETS: DatasetMeta[] = [
   {
     id: "op_garchen_10h",
@@ -41,7 +170,7 @@ export const DATASETS: DatasetMeta[] = [
     tasks: ["ASR", "Forced Alignment"],
     modalities: ["audio", "text"],
     languages: ["bo"],
-    size: { hours: 10, storage_gb: 5.2 },
+    size: { hours: 10, storage_gb: 5.2, rows: 7558, size_mb: 1450 },
     splits: { train: 8, val: 1, test: 1 },
     license: "CC BY-NC 4.0",
     version: "1.0.0",
@@ -63,7 +192,7 @@ export const DATASETS: DatasetMeta[] = [
     tasks: ["ASR"],
     modalities: ["audio", "text"],
     languages: ["bo"],
-    size: { hours: 120, storage_gb: 60 },
+    size: { hours: 120, storage_gb: 60, rows: 95000, size_mb: 61440 },
     license: "CC BY-NC 4.0",
     version: "0.9.0",
     updated_at: "2025-07-14",
@@ -82,7 +211,7 @@ export const DATASETS: DatasetMeta[] = [
     tasks: ["ASR Evaluation"],
     modalities: ["audio", "text"],
     languages: ["bo"],
-    size: { hours: 2, storage_gb: 1.1 },
+    size: { hours: 2, storage_gb: 1.1, rows: 1500, size_mb: 1126 },
     license: "CC BY-NC 4.0",
     version: "1.0.0",
     updated_at: "2025-07-20",
@@ -103,7 +232,13 @@ export const DATASETS: DatasetMeta[] = [
     tasks: ["Language Modeling", "NLP"],
     modalities: ["text"],
     languages: ["bo"],
-    size: { items: 50000, tokens: 25000000, storage_gb: 0.8 },
+    size: {
+      items: 50000,
+      tokens: 25000000,
+      storage_gb: 0.8,
+      rows: 50000,
+      size_mb: 819,
+    },
     splits: { train: 45000, val: 2500, test: 2500 },
     license: "CC BY-SA 4.0",
     version: "2.1.0",
@@ -126,7 +261,7 @@ export const DATASETS: DatasetMeta[] = [
     tasks: ["OCR", "Document Analysis"],
     modalities: ["image", "text"],
     languages: ["bo"],
-    size: { items: 15000, storage_gb: 12.5 },
+    size: { items: 15000, storage_gb: 12.5, rows: 15000, size_mb: 12800 },
     splits: { train: 12000, val: 1500, test: 1500 },
     license: "CC BY 4.0",
     version: "1.2.0",
@@ -149,7 +284,7 @@ export const DATASETS: DatasetMeta[] = [
     tasks: ["Translation", "Terminology"],
     modalities: ["text"],
     languages: ["bo", "sa", "zh", "en"],
-    size: { items: 8500, storage_gb: 0.15 },
+    size: { items: 8500, storage_gb: 0.15, rows: 8500, size_mb: 154 },
     license: "CC0 1.0",
     version: "3.0.0",
     updated_at: "2025-09-01",
@@ -162,7 +297,31 @@ export const DATASETS: DatasetMeta[] = [
   },
 ];
 
-// Helper function to find dataset by ID
+// Helper function to find dataset by ID (from static data)
 export const getDatasetById = (id: string): DatasetMeta | undefined => {
   return DATASETS.find((ds) => ds.id === id);
+};
+
+// Helper function to find dataset by ID (from fetched data)
+export const getDatasetByIdAsync = async (
+  id: string
+): Promise<DatasetMeta | undefined> => {
+  const datasets = await fetchDatasets();
+  return datasets.find((ds) => ds.id === id);
+};
+
+// Manually clear the cache (useful for debugging or force refresh)
+export const clearDatasetsCache = (): void => {
+  cachedDatasets = null;
+  cacheTimestamp = null;
+  console.log("Cache cleared");
+};
+
+// Get cache info (useful for debugging)
+export const getCacheInfo = (): { isCached: boolean; age: number | null } => {
+  if (!cacheTimestamp) {
+    return { isCached: false, age: null };
+  }
+  const age = Date.now() - cacheTimestamp;
+  return { isCached: isCacheValid(), age };
 };

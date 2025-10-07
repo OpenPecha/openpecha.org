@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,8 +16,10 @@ import {
   HardDrive,
   Clock,
   CheckCircle2,
+  Table,
+  FileText,
 } from "lucide-react";
-import { getDatasetById } from "@/data/datasets";
+import { getDatasetByIdAsync, type DatasetMeta } from "@/data/datasets";
 
 const Tag: React.FC<{ label: string }> = ({ label }) => (
   <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs text-gray-600 bg-white">
@@ -28,8 +30,23 @@ const Tag: React.FC<{ label: string }> = ({ label }) => (
 const DatasetDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const dataset = id ? getDatasetById(id) : undefined;
+  const [dataset, setDataset] = useState<DatasetMeta | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  useEffect(() => {
+    const loadDataset = async () => {
+      if (!id) {
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      const data = await getDatasetByIdAsync(id);
+      setDataset(data);
+      setLoading(false);
+    };
+    loadDataset();
+  }, [id]);
 
   const scrollToContact = (requestType: "samples" | "quote") => {
     const el = document.getElementById("contact-form");
@@ -40,6 +57,17 @@ const DatasetDetail: React.FC = () => {
     }
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent mb-4"></div>
+          <p className="text-gray-600">Loading dataset...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!dataset) {
     return (
@@ -64,43 +92,43 @@ const DatasetDetail: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Home className="h-4 w-4" />
+        <div className="flex items-center gap-2 text-sm text-gray-500 mb-6 overflow-x-auto">
+          <Home className="h-4 w-4 flex-shrink-0" />
           <span
-            className="cursor-pointer hover:text-gray-700"
+            className="cursor-pointer hover:text-gray-700 whitespace-nowrap"
             onClick={() => navigate("/")}
           >
             Home
           </span>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
           <span
-            className="cursor-pointer hover:text-gray-700"
+            className="cursor-pointer hover:text-gray-700 whitespace-nowrap"
             onClick={() => navigate("/datasets")}
           >
             Datasets
           </span>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-gray-700">{dataset.name}</span>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
+          <span className="text-gray-700 truncate">{dataset.name}</span>
         </div>
 
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-start gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row items-start gap-4 mb-4">
             <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <Database className="h-8 w-8 text-purple-600" />
             </div>
-            <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 break-words">
                 {dataset.name}
               </h1>
-              <p className="text-lg text-gray-600">{dataset.description}</p>
-              <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
-                <span className="flex items-center gap-1">
+              <p className="text-base sm:text-lg text-gray-600 break-words">{dataset.description}</p>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-3 text-xs sm:text-sm text-gray-500">
+                <span className="flex items-center gap-1 break-all">
                   <span className="font-medium">{dataset.org}</span> /{" "}
                   {dataset.repo}
                 </span>
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
+                <span className="flex items-center gap-1 whitespace-nowrap">
+                  <Calendar className="h-4 w-4 flex-shrink-0" />
                   Updated {dataset.updated_at}
                 </span>
                 <span className="flex items-center gap-1">
@@ -204,7 +232,31 @@ const DatasetDetail: React.FC = () => {
                 <CardTitle>Dataset Size</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {dataset.size.rows && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="flex items-center gap-2 text-gray-600 mb-1">
+                        <Table className="h-4 w-4" />
+                        <span className="text-sm">Rows</span>
+                      </div>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {dataset.size.rows.toLocaleString()}
+                      </p>
+                    </div>
+                  )}
+                  {dataset.size.size_mb && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="flex items-center gap-2 text-gray-600 mb-1">
+                        <FileText className="h-4 w-4" />
+                        <span className="text-sm">Size</span>
+                      </div>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {dataset.size.size_mb >= 1000
+                          ? `${(dataset.size.size_mb / 1024).toFixed(2)} GB`
+                          : `${dataset.size.size_mb.toFixed(2)} MB`}
+                      </p>
+                    </div>
+                  )}
                   {dataset.size.hours && (
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <div className="flex items-center gap-2 text-gray-600 mb-1">
@@ -259,7 +311,7 @@ const DatasetDetail: React.FC = () => {
                   <CardTitle>Data Splits</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {dataset.splits.train && (
                       <div className="text-center">
                         <p className="text-sm text-gray-600 mb-1">Train</p>

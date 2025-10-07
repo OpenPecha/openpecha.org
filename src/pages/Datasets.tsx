@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ArrowLeft, Search, Home, Database } from "lucide-react";
-import { DATASETS } from "@/data/datasets";
+import { fetchDatasets, type DatasetMeta } from "@/data/datasets";
 
 // Simple tag chip
 const Tag: React.FC<{ label: string }> = ({ label }) => (
@@ -13,6 +13,18 @@ const Tag: React.FC<{ label: string }> = ({ label }) => (
 
 const DatasetsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [datasets, setDatasets] = useState<DatasetMeta[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadDatasets = async () => {
+      setLoading(true);
+      const data = await fetchDatasets();
+      setDatasets(data);
+      setLoading(false);
+    };
+    loadDatasets();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -78,7 +90,18 @@ const DatasetsPage: React.FC = () => {
 
         {/* Cards grid */}
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {DATASETS.map((ds) => (
+          {loading ? (
+            <div className="col-span-full text-center py-12">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+              <p className="mt-4 text-gray-600">Loading datasets...</p>
+            </div>
+          ) : datasets.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <Database className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">No datasets available</p>
+            </div>
+          ) : (
+            datasets.map((ds) => (
             <div
               key={ds.id}
               className="group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -103,14 +126,34 @@ const DatasetsPage: React.FC = () => {
                 ))}
               </div>
 
-              <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
-                <span>{ds.languages.join(", ")}</span>
-                <button className="text-sm font-medium text-blue-600 inline-flex items-center gap-1 hover:text-blue-700">
-                  Details <ChevronRight className="h-4 w-4" />
-                </button>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span>{ds.languages.join(", ")}</span>
+                  <button className="text-sm font-medium text-blue-600 inline-flex items-center gap-1 hover:text-blue-700">
+                    Details <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+                {(ds.size.rows || ds.size.size_mb) && (
+                  <div className="flex items-center gap-3 text-xs text-gray-600 pt-1 border-t">
+                    {ds.size.rows && (
+                      <span className="flex items-center gap-1">
+                        <Database className="h-3 w-3" />
+                        {ds.size.rows.toLocaleString()} rows
+                      </span>
+                    )}
+                    {ds.size.size_mb && (
+                      <span>
+                        {ds.size.size_mb >= 1000
+                          ? `${(ds.size.size_mb / 1024).toFixed(2)} GB`
+                          : `${ds.size.size_mb.toFixed(2)} MB`}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Back button */}
