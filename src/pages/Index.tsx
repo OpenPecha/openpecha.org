@@ -536,7 +536,7 @@ const Index = () => {
                 </a>
 
                 <a
-                  href="https://discord.gg/6raQKJWk"
+                  href="https://discord.gg/7GFpPFSTeA"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block transition-transform hover:scale-105"

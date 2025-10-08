@@ -1,8 +1,8 @@
-# Boundless Buddha Wisdom
+# OpenPecha.org
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/62f43e5b-3a60-486a-b02f-05141e3c007a
+**Website**: https://openpecha.org
 
 ## Developer Setup
 
@@ -16,7 +16,7 @@
 1. **Clone the repository**
    ```sh
    git clone <YOUR_GIT_URL>
-   cd boundless-buddha-wisdom
+   cd openpecha.org
    ```
 
 2. **Install dependencies**
@@ -53,11 +53,7 @@ This project uses modern web technologies:
 
 There are several ways to work with this codebase:
 
-### 1. Using Lovable (Recommended)
-
-Visit the [Lovable Project](https://lovable.dev/projects/62f43e5b-3a60-486a-b02f-05141e3c007a) and start prompting. Changes made via Lovable will be committed automatically to this repo.
-
-### 2. Local Development
+### Local Development
 
 Work locally using your preferred IDE:
 
@@ -71,7 +67,7 @@ The dev server will start with:
 - Error overlay
 - Fast refresh
 
-### 3. GitHub Integration
+### GitHub Integration
 
 - **Direct GitHub Editing**: Use GitHub's web interface to make quick edits
 - **GitHub Codespaces**: For a full cloud development environment
@@ -103,7 +99,7 @@ Ensure you have the prerequisites installed:
 ```sh
 # Clone and navigate to the project
 git clone <YOUR_GIT_URL>
-cd boundless-buddha-wisdom
+cd openpecha.org
 
 # Install all dependencies
 npm install
@@ -192,14 +188,20 @@ npm run lint
 
 ## Deployment
 
-Deploy your project through [Lovable](https://lovable.dev/projects/62f43e5b-3a60-486a-b02f-05141e3c007a) by clicking Share -> Publish.
+This is a static site built with Vite. Build and deploy the `dist/` directory to your preferred static hosting provider (e.g., GitHub Pages, Netlify, Vercel).
 
-### Custom Domain Setup
+Build locally:
 
-You can connect a custom domain to your project:
-1. Navigate to Project > Settings > Domains
-2. Click "Connect Domain"
-3. Follow the [custom domain setup guide](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```sh
+npm run build
+```
+
+- GitHub Pages: configure a workflow to publish the contents of `dist/` or push it to a `gh-pages` branch. See the [GitHub Pages documentation](https://docs.github.com/en/pages).
+- Netlify/Vercel: set the build command to `npm run build` and the publish/output directory to `dist/`.
+
+### Custom domain
+
+This repository includes a `CNAME` file for `openpecha.org`. For setup instructions, see GitHub’s guide on [configuring a custom domain for GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
 
 ## Data Sources
 
